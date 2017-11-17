@@ -1,0 +1,77 @@
+.lsr {
+	transform-style: preserve-3d;
+	-webkit-tap-highlight-color: rgba(#000,0);
+
+	img {
+	  box-shadow: 0 2px 8px rgba(14,21,47,0.25);
+  }
+
+  .lsr-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    transition: all 0.1s ease-out;
+
+    &.over {
+      .lsr-shadow {
+        box-shadow: 0 16px 32px rgba(14,21,47,0.25), 0 8px 8px rgba(14,21,47,0.25);
+      }
+      .lsr-shine {
+        opacity: 1;
+      }    
+    }
+  }
+
+  .lsr-layers {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    transform-style: preserve-3d;
+  }
+
+  .lsr-rendered-layer {
+    position: absolute;
+    /* changed from 104% to 100% and -2% to 0% respectively,
+    but not sure how to change these on hover */
+    width: 100%;
+    height: 100%;
+    top: 0%; 
+    left: 0%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    background-size: cover;
+    transition: all 0.125s ease-out;
+  }
+
+  .lsr-shadow {
+    position: absolute;
+    top: 5%; 
+    left: 5%;
+    width: 90%;
+    height: 90%;
+    transition: all 0.25s ease-out;
+    box-shadow: 0 0px 0px rgba(14,21,47,0);
+  }
+
+  .lsr-shine {
+    opacity: 0;
+    position: absolute;
+    top: 0; 
+    left: 0;
+    z-index: 1;
+    right: 0; 
+    bottom: 0;
+    border-radius: 8px;
+    background: linear-gradient(180deg, rgba(255,255,255,0) 0%,rgba(255,255,255,0) 80%);
+    background: radial-gradient(72px circle at 100px 40px, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 60%, rgba(255,255,255,0) 100%);
+  }
+}
+
+
+.lsr:focus {
+/*  outline: none; */
+}

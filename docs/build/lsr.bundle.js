@@ -192,7 +192,8 @@
       imgs.push(config.node);
     }
 
-    if (imgs.length <= 0) {
+    // no .lsr elements to process
+    if (imgs.length == 0) {
       return;
     }
 
@@ -210,22 +211,22 @@
         thisImg.removeChild(thisImg.firstChild);
       }
 
-      var containerHTML = document.createElement('div'),
-          shineHTML = document.createElement('div'),
-          shadowHTML = document.createElement('div'),
+      var container = document.createElement('div'),
+          shine = document.createElement('div'),
+          shadow = document.createElement('div'),
           layersHTML = document.createElement('div'),
           layers = [];
 
-      containerHTML.className = 'lsr-container';
+      container.className = 'lsr-container';
 
       if (config.shine) {
-        shineHTML.className = 'lsr-shine';
-        containerHTML.appendChild(shineHTML);
+        shine.className = 'lsr-shine';
+        container.appendChild(shine);
       }
 
       if (config.shadow) {
-        shadowHTML.className = 'lsr-shadow';
-        containerHTML.appendChild(shadowHTML);
+        shadow.className = 'lsr-shadow';
+        container.appendChild(shadow);
       }
 
       layersHTML.className = 'lsr-layers';
@@ -243,9 +244,9 @@
         layers.push(layer);
       }
 
-      containerHTML.appendChild(layersHTML);
+      container.appendChild(layersHTML);
 
-      thisImg.appendChild(containerHTML);
+      thisImg.appendChild(container);
 
       var w = thisImg.clientWidth || thisImg.offsetWidth || thisImg.scrollWidth;
       thisImg.style.transform = 'perspective(' + w * 3 + 'px)';
@@ -270,7 +271,7 @@
             window.preventScroll = false;
             processExit(e, _thisImg, _layers, _totalLayers, _shine);
           });
-        })(thisImg, layers, layerElems.length, shineHTML);
+        })(thisImg, layers, layerElems.length, shine);
       } else {
 
         (function (_thisImg, _layers, _totalLayers, _shine) {

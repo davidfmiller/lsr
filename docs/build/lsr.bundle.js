@@ -294,7 +294,7 @@
           thisImg.addEventListener('blur', function (e) {
             processExit(_thisImg, _layers, _totalLayers, _shine);
           });
-        })(thisImg, layers, layerElems.length, shineHTML);
+        })(thisImg, layers, layerElems.length, shine);
       }
     }
 

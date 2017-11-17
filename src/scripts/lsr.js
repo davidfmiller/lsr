@@ -210,7 +210,7 @@
           });
 
 
-        })(thisImg,layers,layerElems.length,shineHTML);
+        })(thisImg,layers,layerElems.length,shine);
       }
     }
  

@@ -41,6 +41,29 @@
   },
 
   /*
+   * Retrieve an object containing { top : xx, left : xx, bottom: xx, right: xx, width: xx, height: xx }
+   *
+   * @param node (DOMNode)
+   */
+  getRect = function(node) {
+
+    var
+    rect = node.getBoundingClientRect(),
+    ret = { top : rect.top, left : rect.left, bottom: rect.bottom, right : rect.right }; // create a new object that is not read-only
+
+    ret.top += window.pageYOffset;
+    ret.left += window.pageXOffset;
+
+    ret.bottom += window.pageYOffset;
+    ret.right += window.pageYOffset;
+
+    ret.width = rect.right - rect.left;
+    ret.height = rect.bottom - rect.top;
+
+    return ret;
+  },
+
+  /*
    * Merge two objects into one, values in b take precedence over values in a
    *
    * @param a {Object}
@@ -68,6 +91,7 @@
 
     var
       i = 0,
+      l = 0,
       defaults = {
         node : document.body,
         shine : true,
@@ -106,7 +130,7 @@
       return;
     }
 
-    for (var l = 0; l < imgs.length; l++){
+    for (l = 0; l < imgs.length; l++){
 
       var
         thisImg = imgs[l],
@@ -134,10 +158,16 @@
         shine.className = 'lsr-shine';
         container.appendChild(shine);
       }
+      else {
+//        shine = null;
+      }
 
       if (config.shadow) {
         shadow.className = 'lsr-shadow';
         container.appendChild(shadow);
+      }
+      else {
+        shadow = null;
       }
 
       layersHTML.className = 'lsr-layers';
@@ -171,13 +201,14 @@
             if (window.preventScroll){
               e.preventDefault();
             }
-            processMovement(e,true,_thisImg,_layers,_totalLayers,_shine);
+            processMovement(e,_thisImg,_layers,_totalLayers,_shine);
           });
 
           thisImg.addEventListener('touchstart', function(e){
             window.preventScroll = true;
-            processEnter(e,_thisImg);
+            processEnter(_thisImg);
           });
+
 
           thisImg.addEventListener('touchend', function(e){
             window.preventScroll = false;
@@ -189,12 +220,14 @@
       } else {
 
         (function(_thisImg,_layers,_totalLayers,_shine) {
+
           thisImg.addEventListener('mousemove', function(e){
-            processMovement(e,false,_thisImg,_layers,_totalLayers,_shine);
+            processMovement(e,_thisImg,_layers,_totalLayers,_shine);
           });
 
           thisImg.addEventListener('focus', function(e){
             processEnter(_thisImg);
+            processMovement(null,_thisImg,_layers,_totalLayers,_shine);
           });
 
           thisImg.addEventListener('mouseenter', function(e){
@@ -209,19 +242,24 @@
             processExit(_thisImg,_layers,_totalLayers,_shine);
           });
 
-
         })(thisImg,layers,layerElems.length,shine);
       }
     }
  
-    function processMovement(e, touchEnabled, element, layers, totalLayers, shine){
+    function processMovement(event, element, layers, totalLayers, shine){
+
+      if (! event) {
+        var region = getRect(element);
+        event = { pageX : region.left + region.width / 2, pageY : region.top + region.height / 2 };
+      }
 
       var
+        touchEnabled = ('ontouchstart' in window || navigator.msMaxTouchPoints) ? true : false,
         i = 0,
         bdst = document.body.scrollTop,
         bdsl = document.body.scrollLeft,
-        pageX = (touchEnabled)? e.touches[0].pageX : e.pageX,
-        pageY = (touchEnabled)? e.touches[0].pageY : e.pageY,
+        pageX = (touchEnabled)? event.touches[0].pageX : event.pageX,
+        pageY = (touchEnabled)? event.touches[0].pageY : event.pageY,
         offsets = element.getBoundingClientRect(),
         w = element.clientWidth || element.offsetWidth || element.scrollWidth, // width
         h = element.clientHeight || element.offsetHeight || element.scrollHeight, // height

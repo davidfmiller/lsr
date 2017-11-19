@@ -16,11 +16,12 @@
       height: 100%;
     }
 
-    div.lsr {
+    a.lsr {
+      display: block;
       width: 200px;
       height: 200px;
       cursor: pointer;
-      margin: 20% auto 0 auto;
+      margin: 100px auto 0 auto;
     }
 
     footer {
@@ -53,9 +54,9 @@
 </head>
 <body>
 
-  <div class="lsr" tabindex="1">
+  <a class="lsr" tabindex="1">
     <div class="lsr-layer" data-class="router">Text content for layer goes here</div>
-  </div>
+  </a>
 
 <!--
   <label>
@@ -77,10 +78,14 @@
         node : null,
         shadow : true,
         shine : true,
-        scale : 1.4,
-        rotation : { x : 0.1, y : 0.1 }
+        scale : 1.1,
+        rotation : {
+          x : 0.1,
+          y : 0.1
+        }
       });
     });
   </script>
 </body>
 </html>
+

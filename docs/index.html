@@ -26,16 +26,31 @@
       padding-top: 10px;
       width: 200px;
       margin: 20px auto 0 auto;
-      border-top: 1px solid rgba(255,255,255,0.1);
+      border-top: 1px solid rgba(255,255,255,0.2);
       text-align: center;
     }
+
+    a {
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    a,
+    a:hover,
+    a:visited {
+      color: rgba(237, 0, 255, 1.0);
+    }
+
   </style>
 </head>
 <body>
 
   <div class="lsr" tabindex="1">
     <img src="icon.png">
-    <div class="lsr-layer" data-img="icon.png"></div>
+    <div class="lsr-layer" data-img="icon.png">Text content for layer goes here</div>
   </div>
 
 <!--

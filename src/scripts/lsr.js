@@ -179,7 +179,7 @@
           imgSrc = layerElems[i].getAttribute('data-img');
  
         layer.className = 'lsr-rendered-layer';
-        layer.setAttribute('data-layer',i);
+//        layer.setAttribute('data-layer',i);
         layer.style.backgroundImage = 'url('+imgSrc+')';
         layersHTML.appendChild(layer);
  

@@ -93,12 +93,13 @@
       i = 0,
       l = 0,
       defaults = {
-        node : document.body,
-        shine : true,
-        shadow : true,
-        rotation : {
-          x : 0.05,
-          y : 0.05
+        'namespace' : 'lsr',
+        'node' : document.body,
+        'shine' : true,
+        'shadow' : true,
+        'rotation' : {
+          'x' : 0.05,
+          'y' : 0.05
         }
       },
       config = merge(defaults, arguments[0]) || defaults,
@@ -120,8 +121,8 @@
     if (! config.rotation.hasOwnProperty('x')) { config.rotation.x = defaults.rotation.x; }
     if (! config.rotation.hasOwnProperty('y')) { config.rotation.y = defaults.rotation.y; }
 
-    imgs = arr(config.node.querySelectorAll('.lsr'));
-    if (config.node.classList.contains('lsr')) {
+    imgs = arr(config.node.querySelectorAll('.' + config['namespace'] ));
+    if (config.node.classList.contains(config['namespace'])) {
       imgs.push(config.node);
     }
 
@@ -135,7 +136,7 @@
       var
         thisImg = imgs[l],
         i = 0,
-        layerElems = thisImg.querySelectorAll('.lsr-layer');
+        layerElems = thisImg.querySelectorAll('.' + config['namespace'] + '-layer');
 
       if (layerElems.length <= 0) {
         continue;
@@ -146,16 +147,17 @@
       }
 
       var
+        w = 0,
         container = document.createElement('div'),
         shine = document.createElement('div'),
         shadow = document.createElement('div'),
         layersHTML = document.createElement('div'),
         layers = [];
 
-      container.className = 'lsr-container';
+      container.className = config['namespace'] + '-container';
 
       if (config.shine) {
-        shine.className = 'lsr-shine';
+        shine.className = config['namespace'] + '-shine';
         container.appendChild(shine);
       }
       else {
@@ -163,26 +165,26 @@
       }
 
       if (config.shadow) {
-        shadow.className = 'lsr-shadow';
+        shadow.className = config['namespace'] + '-shadow';
         container.appendChild(shadow);
       }
       else {
         shadow = null;
       }
 
-      layersHTML.className = 'lsr-layers';
+      layersHTML.className = config['namespace'] + '-layers';
  
       for (i = 0; i < layerElems.length; i++){
 
         var
           layer = document.createElement('div'),
-          imgSrc = layerElems[i].getAttribute('data-img');
- 
-        layer.className = 'lsr-rendered-layer';
-//        layer.setAttribute('data-layer',i);
-        layer.style.backgroundImage = 'url('+imgSrc+')';
+          clsName = layerElems[i].getAttribute('data-class');
+
+        if (clsName) {
+          layer.classList.add(clsName);
+        }
+
         layersHTML.appendChild(layer);
- 
         layers.push(layer);
       }
 
@@ -190,10 +192,11 @@
 
       thisImg.appendChild(container);
 
-      var w = thisImg.clientWidth || thisImg.offsetWidth || thisImg.scrollWidth;
-      thisImg.style.transform = 'perspective('+ w*3 +'px)';
+      w = thisImg.clientWidth || thisImg.offsetWidth || thisImg.scrollWidth;
+      thisImg.style.transform = 'perspective('+ (w * 3) + 'px)';
 
       if (supportsTouch) {
+
         window.preventScroll = false;
  
         (function(_thisImg,_layers,_totalLayers,_shine) {

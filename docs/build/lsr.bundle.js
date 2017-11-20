@@ -155,6 +155,8 @@
 	      i = 0,
 	      l = 0,
 	      defaults = {
+	        log : true,
+	        prefix : 'lsr',
 	        node : document.body,
 	        shine : true,
 	        shadow : true,
@@ -182,13 +184,14 @@
 	    if (! config.rotation.hasOwnProperty('x')) { config.rotation.x = defaults.rotation.x; }
 	    if (! config.rotation.hasOwnProperty('y')) { config.rotation.y = defaults.rotation.y; }
 
-	    imgs = arr(config.node.querySelectorAll('.lsr'));
-	    if (config.node.classList.contains('lsr')) {
+	    imgs = arr(config.node.querySelectorAll('.' + config.prefix));
+	    if (config.node.classList.contains(config.prefix)) {
 	      imgs.push(config.node);
 	    }
 
 	    // no .lsr elements to process
 	    if (imgs.length == 0){
+	      if (defaults.log) { console.log('No layers'); }
 	      return;
 	    }
 
@@ -197,7 +200,7 @@
 	      var
 	        thisImg = imgs[l],
 	        i = 0,
-	        layerElems = thisImg.querySelectorAll('.lsr-layer');
+	        layerElems = thisImg.querySelectorAll('.' + config.prefix + '-layer');
 
 	      if (layerElems.length <= 0) {
 	        continue;
@@ -214,10 +217,10 @@
 	        layersHTML = document.createElement('div'),
 	        layers = [];
 
-	      container.className = 'lsr-container';
+	      container.className = config.prefix + '-container';
 
 	      if (config.shine) {
-	        shine.className = 'lsr-shine';
+	        shine.className = config.prefix + '-shine';
 	        container.appendChild(shine);
 	      }
 	      else {
@@ -225,25 +228,21 @@
 	      }
 
 	      if (config.shadow) {
-	        shadow.className = 'lsr-shadow';
+	        shadow.className = config.prefix + '-shadow';
 	        container.appendChild(shadow);
 	      }
 	      else {
 	        shadow = null;
 	      }
 
-	      layersHTML.className = 'lsr-layers';
+	      layersHTML.className = config.prefix + '-layers';
 	 
 	      for (i = 0; i < layerElems.length; i++){
 
 	        var
-	          layer = document.createElement('div'),
-	          clsName = layerElems[i].getAttribute('data-class');
+	          layer = document.createElement('div');
 	 
-	        layer.className = clsName;
-
-	//        layer.setAttribute('data-layer',i);
-	        //layer.style.backgroundImage = 'url('+imgSrc+')';
+	        layer.className = layerElems[i].getAttribute('data-class');
 	        layersHTML.appendChild(layer);
 	 
 	        layers.push(layer);

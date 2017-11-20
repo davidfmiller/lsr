@@ -6,7 +6,8 @@
   <link rel="stylesheet" type="text/css" href="build/lsr.css">
   <style type="text/css">
     body { 
-      background: #fff; 
+      background: #fff;
+      background: #000;
       font-family: sans-serif;
       color: rgba(0,0,0,0.2);
     }
@@ -16,7 +17,7 @@
       height: 100%;
     }
 
-    a.lsr {
+    div.lsr {
       display: block;
       width: 200px;
       height: 200px;
@@ -54,9 +55,9 @@
 </head>
 <body>
 
-  <a class="lsr" tabindex="1">
+  <div class="lsr" tabindex="1">
     <div class="lsr-layer" data-class="router">Text content for layer goes here</div>
-  </a>
+  </div>
 
 <!--
   <label>
@@ -76,8 +77,8 @@
     document.addEventListener('DOMContentLoaded', function(event) {
       new window.LSR({
         node : null,
-        shadow : true,
-        shine : true,
+        shadow : false,
+        shine : false,
         scale : 1.1,
         rotation : {
           x : 0.1,

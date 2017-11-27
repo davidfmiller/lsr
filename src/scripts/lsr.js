@@ -13,11 +13,11 @@
  *
  * http://designmodo.com/apple-tv-effect
  */
- 
-(function (){
+
+(function() {
 
   'use strict';
-  
+
   const
   VERSION = '0.0.1',
 
@@ -93,14 +93,14 @@
       i = 0,
       l = 0,
       defaults = {
-        log : true,
-        prefix : 'lsr',
-        node : document.body,
-        shine : true,
-        shadow : true,
-        rotation : {
-          x : 0.05,
-          y : 0.05
+        log: true,
+        prefix: 'lsr',
+        node: document.body,
+        shine: true,
+        shadow: true,
+        rotation: {
+          x: 0.05,
+          y: 0.05
         }
       },
       config = merge(defaults, arguments[0]) || defaults,
@@ -119,8 +119,12 @@
       throw new Error('Invalid LSR ' + config.node);
     }
 
-    if (! config.rotation.hasOwnProperty('x')) { config.rotation.x = defaults.rotation.x; }
-    if (! config.rotation.hasOwnProperty('y')) { config.rotation.y = defaults.rotation.y; }
+    if (! config.rotation.hasOwnProperty('x')) {
+      config.rotation.x = defaults.rotation.x;
+    }
+    if (! config.rotation.hasOwnProperty('y')) {
+      config.rotation.y = defaults.rotation.y;
+    }
 
     imgs = arr(config.node.querySelectorAll('.' + config.prefix));
     if (config.node.classList.contains(config.prefix)) {
@@ -175,7 +179,7 @@
 
       layersHTML.className = config.prefix + '-layers';
  
-      for (i = 0; i < layerElems.length; i++){
+      for (i = 0; i < layerElems.length; i++) {
 
         var
           layer = document.createElement('div');
@@ -197,20 +201,20 @@
         window.preventScroll = false;
  
         (function(_thisImg,_layers,_totalLayers,_shine) {
-          thisImg.addEventListener('touchmove', function(e){
+          thisImg.addEventListener('touchmove', function(e) {
             if (window.preventScroll){
               e.preventDefault();
             }
             processMovement(e,_thisImg,_layers,_totalLayers,_shine);
           });
 
-          thisImg.addEventListener('touchstart', function(e){
+          thisImg.addEventListener('touchstart', function(e) {
             window.preventScroll = true;
             processEnter(_thisImg);
           });
 
 
-          thisImg.addEventListener('touchend', function(e){
+          thisImg.addEventListener('touchend', function(e) {
             window.preventScroll = false;
             processExit(e,_thisImg,_layers,_totalLayers,_shine);
           });
@@ -221,36 +225,36 @@
 
         (function(_thisImg,_layers,_totalLayers,_shine) {
 
-          thisImg.addEventListener('mousemove', function(e){
+          thisImg.addEventListener('mousemove', function(e) {
             processMovement(e,_thisImg,_layers,_totalLayers,_shine);
           });
 
-          thisImg.addEventListener('focus', function(e){
+          thisImg.addEventListener('focus', function() {
             processEnter(_thisImg);
             processMovement(null,_thisImg,_layers,_totalLayers,_shine);
           });
 
-          thisImg.addEventListener('mouseenter', function(e){
+          thisImg.addEventListener('mouseenter', function() {
             processEnter(_thisImg);
           });
 
-          thisImg.addEventListener('mouseleave', function(e){
+          thisImg.addEventListener('mouseleave', function() {
             processExit(_thisImg,_layers,_totalLayers,_shine);
           });
 
-          thisImg.addEventListener('blur', function(e){
+          thisImg.addEventListener('blur', function() {
             processExit(_thisImg,_layers,_totalLayers,_shine);
           });
 
         })(thisImg,layers,layerElems.length,shine);
       }
     }
- 
+
     function processMovement(event, element, layers, totalLayers, shine){
 
       if (! event) {
-        var region = getRect(element);
-        event = { pageX : region.left + region.width / 2, pageY : region.top + region.height / 2 };
+        const region = getRect(element);
+        event = { pageX: region.left + region.width / 2, pageY: region.top + region.height / 2 };
       }
 
       var
@@ -264,14 +268,14 @@
         w = element.clientWidth || element.offsetWidth || element.scrollWidth, // width
         h = element.clientHeight || element.offsetHeight || element.scrollHeight, // height
         wMultiple = 320/w,
-        offsetX = 0.52 - (pageX - offsets.left - bdsl)/w, //cursor position X
-        offsetY = 0.52 - (pageY - offsets.top - bdst)/h, //cursor position Y
-        dy = (pageY - offsets.top - bdst) - h / 2, //@h/2 = center of container
-        dx = (pageX - offsets.left - bdsl) - w / 2, //@w/2 = center of container
-        yRotate = (offsetX - dx)*(config.rotation.y * wMultiple), //rotation for container Y
-        xRotate = (dy - offsetY)*(config.rotation.x * wMultiple), //rotation for container X
-        imgCSS = 'rotateX(' + xRotate + 'deg) rotateY(' + yRotate + 'deg)', //img transform
-        angle = Math.atan2(dy, dx) * 180 / Math.PI - 90; //convert rad in degrees
+        offsetX = 0.52 - (pageX - offsets.left - bdsl)/w, // cursor position X
+        offsetY = 0.52 - (pageY - offsets.top - bdst)/h, // cursor position Y
+        dy = (pageY - offsets.top - bdst) - h / 2, // @h/2 = center of container
+        dx = (pageX - offsets.left - bdsl) - w / 2, // @w/2 = center of container
+        yRotate = (offsetX - dx)*(config.rotation.y * wMultiple), // rotation for container Y
+        xRotate = (dy - offsetY)*(config.rotation.x * wMultiple), // rotation for container X
+        imgCSS = 'rotateX(' + xRotate + 'deg) rotateY(' + yRotate + 'deg)', // img transform
+        angle = Math.atan2(dy, dx) * 180 / Math.PI - 90; // convert rad in degrees
 
       //get angle between 0-360
       if (angle < 0) {
@@ -289,10 +293,10 @@
       }
 
       //parallax for each layer
-      var revNum = totalLayers;
+      //var revNum = totalLayers;
       for (i = 0; i < totalLayers; i++) {
         layers[i].style.transform = 'translateX(' + (offsetX * (totalLayers - i)) * ((i * 2.5) / wMultiple) + 'px) translateY(' + (offsetY * totalLayers) * ((i * 2.5) / wMultiple) + 'px)';
-        revNum--;
+//        revNum--;
       }
     }
 
@@ -311,11 +315,11 @@
       shine.style.cssText = '';
 
       for (i = 0; i < totalLayers; i++) {
-        layers[i].style.transform = ''; 
+        layers[i].style.transform = '';
       }
     }
   };
 
   module.exports = LSR;
-  
+
 }());

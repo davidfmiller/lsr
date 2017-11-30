@@ -142,7 +142,7 @@
     // no .lsr elements to process
     if (imgs.length === 0) {
       if (defaults.log) {
-        console.log('No layers');
+        window.console.log('No layers');
       }
       return;
     }
@@ -252,9 +252,8 @@
         event = { pageX: region.left + region.width / 2, pageY: region.top + region.height / 2 };
       }
 
-      let
+      const
         touchEnabled = ('ontouchstart' in window || navigator.msMaxTouchPoints) ? true : false,
-        i = 0,
         bdst = document.body.scrollTop,
         bdsl = document.body.scrollLeft,
         pageX = (touchEnabled)? event.touches[0].pageX : event.pageX,
@@ -271,6 +270,8 @@
         xRotate = (dy - offsetY)*(config.rotation.x * wMultiple), // rotation for container X
         imgCSS = 'rotateX(' + xRotate + 'deg) rotateY(' + yRotate + 'deg)', // img transform
         angle = Math.atan2(dy, dx) * 180 / Math.PI - 90; // convert rad in degrees
+
+      let i = 0;
 
       // get angle between 0-360
       if (angle < 0) {

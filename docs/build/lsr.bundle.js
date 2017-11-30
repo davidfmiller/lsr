@@ -220,7 +220,7 @@
     // no .lsr elements to process
     if (imgs.length === 0) {
       if (defaults.log) {
-        console.log('No layers');
+        window.console.log('No layers');
       }
       return;
     }
@@ -237,11 +237,11 @@
         thisImg.removeChild(thisImg.firstChild);
       }
 
-      var container = document.createElement('div'),
-          shine = document.createElement('div'),
-          shadow = document.createElement('div'),
-          layersHTML = document.createElement('div'),
-          layers = [];
+      const container = document.createElement('div'),
+            shine = document.createElement('div'),
+            shadow = document.createElement('div'),
+            layersHTML = document.createElement('div'),
+            layers = [];
 
       container.className = config.prefix + '-container';
 
@@ -328,33 +328,34 @@
         event = { pageX: region.left + region.width / 2, pageY: region.top + region.height / 2 };
       }
 
-      let touchEnabled = 'ontouchstart' in window || navigator.msMaxTouchPoints ? true : false,
-          i = 0,
-          bdst = document.body.scrollTop,
-          bdsl = document.body.scrollLeft,
-          pageX = touchEnabled ? event.touches[0].pageX : event.pageX,
-          pageY = touchEnabled ? event.touches[0].pageY : event.pageY,
-          offsets = element.getBoundingClientRect(),
-          w = element.clientWidth || element.offsetWidth || element.scrollWidth,
-          // width
+      const touchEnabled = 'ontouchstart' in window || navigator.msMaxTouchPoints ? true : false,
+            bdst = document.body.scrollTop,
+            bdsl = document.body.scrollLeft,
+            pageX = touchEnabled ? event.touches[0].pageX : event.pageX,
+            pageY = touchEnabled ? event.touches[0].pageY : event.pageY,
+            offsets = element.getBoundingClientRect(),
+            w = element.clientWidth || element.offsetWidth || element.scrollWidth,
+            // width
       h = element.clientHeight || element.offsetHeight || element.scrollHeight,
-          // height
+            // height
       wMultiple = 320 / w,
-          offsetX = 0.52 - (pageX - offsets.left - bdsl) / w,
-          // cursor position X
+            offsetX = 0.52 - (pageX - offsets.left - bdsl) / w,
+            // cursor position X
       offsetY = 0.52 - (pageY - offsets.top - bdst) / h,
-          // cursor position Y
+            // cursor position Y
       dy = pageY - offsets.top - bdst - h / 2,
-          // @h/2 = center of container
+            // @h/2 = center of container
       dx = pageX - offsets.left - bdsl - w / 2,
-          // @w/2 = center of container
+            // @w/2 = center of container
       yRotate = (offsetX - dx) * (config.rotation.y * wMultiple),
-          // rotation for container Y
+            // rotation for container Y
       xRotate = (dy - offsetY) * (config.rotation.x * wMultiple),
-          // rotation for container X
+            // rotation for container X
       imgCSS = 'rotateX(' + xRotate + 'deg) rotateY(' + yRotate + 'deg)',
-          // img transform
+            // img transform
       angle = Math.atan2(dy, dx) * 180 / Math.PI - 90; // convert rad in degrees
+
+      let i = 0;
 
       // get angle between 0-360
       if (angle < 0) {

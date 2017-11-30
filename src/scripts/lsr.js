@@ -160,7 +160,7 @@
         thisImg.removeChild(thisImg.firstChild);
       }
 
-      var
+      const
         container = document.createElement('div'),
         shine = document.createElement('div'),
         shadow = document.createElement('div'),
@@ -177,8 +177,7 @@
       if (config.shadow) {
         shadow.className = config.prefix + '-shadow';
         container.appendChild(shadow);
-      }
-      else {
+      } else {
         shadow = null;
       }
 

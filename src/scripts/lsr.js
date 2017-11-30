@@ -1,5 +1,5 @@
 /* jshint undef: true,strict:true,trailing:true,loopfunc:true */
-/* global document,window,Element,module */
+/* global document,window,Element,module,console */
 
 // https://developer.apple.com/tvos/human-interface-guidelines/icons-and-images/layered-images/
 
@@ -15,11 +15,10 @@
  */
 
 (function() {
-
   'use strict';
 
   const
-  VERSION = '0.0.1',
+  // VERSION = '0.0.1',
 
   /*
    * Convert an array-like thing (ex: NodeList or arguments object) into a proper array
@@ -28,10 +27,12 @@
    * @return Array
    */
   arr = function(list) {
+    const ret = [];
+    let i = 0;
 
-    var ret = [], i = 0;
-
-    if (! list.length) { return ret; }
+    if (! list.length) {
+      return ret;
+    }
 
     for (i = 0; i < list.length; i++) {
       ret.push(list[i]);
@@ -46,10 +47,9 @@
    * @param node (DOMNode)
    */
   getRect = function(node) {
-
-    var
+    const
     rect = node.getBoundingClientRect(),
-    ret = { top : rect.top, left : rect.left, bottom: rect.bottom, right : rect.right }; // create a new object that is not read-only
+    ret = { top: rect.top, left: rect.left, bottom: rect.bottom, right: rect.right }; // create a new object that is not read-only
 
     ret.top += window.pageYOffset;
     ret.left += window.pageXOffset;
@@ -72,13 +72,16 @@
    * @return Object
    */
   merge = function(a, b) {
-    var o = {};
-    for (var i in a) {
+    const o = {};
+    let i;
+    for (i in a) {
       if (a.hasOwnProperty(i)) {
         o[i] = a[i];
       }
     }
-    if (! b) { return o; }
+    if (! b) {
+      return o;
+    }
     for (i in b) {
       if (b.hasOwnProperty(i)) {
         o[i] = b[i];
@@ -87,31 +90,36 @@
     return o;
   };
 
-  var LSR = function(config) {
+  /**
+   * Create an LSR instance
+   *
+   * @param {Object} arg - object containing params
+   */
+  const LSR = function(arg) {
+    let
+    l = 0,
+    imgs = [];
 
-    var
-      i = 0,
-      l = 0,
-      defaults = {
-        log: true,
-        prefix: 'lsr',
-        node: document.body,
-        shine: true,
-        shadow: true,
-        rotation: {
-          x: 0.05,
-          y: 0.05
-        }
-      },
-      config = merge(defaults, arguments[0]) || defaults,
-      imgs = [],
-      supportsTouch = 'ontouchstart' in window || navigator.msMaxTouchPoints;
+    const
+    defaults = {
+      log: true,
+      prefix: 'lsr',
+      node: document.body,
+      shine: true,
+      shadow: true,
+      rotation: {
+        x: 0.05,
+        y: 0.05
+      }
+    },
+    config = merge(defaults, arg) || defaults,
+    supportsTouch = 'ontouchstart' in window || navigator.msMaxTouchPoints;
 
     if (! config.node) {
       config.node = document.body;
     }
 
-    if (typeof config.node == 'string') {
+    if (typeof config.node === 'string') {
       config.node = document.querySelector(config.node);
     }
 
@@ -132,17 +140,17 @@
     }
 
     // no .lsr elements to process
-    if (imgs.length == 0){
-      if (defaults.log) { console.log('No layers'); }
+    if (imgs.length === 0) {
+      if (defaults.log) {
+        console.log('No layers');
+      }
       return;
     }
 
-    for (l = 0; l < imgs.length; l++){
-
-      var
-        thisImg = imgs[l],
-        i = 0,
-        layerElems = thisImg.querySelectorAll('.' + config.prefix + '-layer');
+    for (l = 0; l < imgs.length; l++) {
+      const
+      thisImg = imgs[l],
+      layerElems = thisImg.querySelectorAll('.' + config.prefix + '-layer');
 
       if (layerElems.length <= 0) {
         continue;
@@ -165,9 +173,6 @@
         shine.className = config.prefix + '-shine';
         container.appendChild(shine);
       }
-      else {
-//        shine = null;
-      }
 
       if (config.shadow) {
         shadow.className = config.prefix + '-shadow';
@@ -178,15 +183,13 @@
       }
 
       layersHTML.className = config.prefix + '-layers';
- 
-      for (i = 0; i < layerElems.length; i++) {
 
-        var
-          layer = document.createElement('div');
- 
+      for (let i = 0; i < layerElems.length; i++) {
+        const layer = document.createElement('div');
+
         layer.className = layerElems[i].getAttribute('data-class');
         layersHTML.appendChild(layer);
- 
+
         layers.push(layer);
       }
 
@@ -194,37 +197,32 @@
 
       thisImg.appendChild(container);
 
-      var w = thisImg.clientWidth || thisImg.offsetWidth || thisImg.scrollWidth;
+      const w = thisImg.clientWidth || thisImg.offsetWidth || thisImg.scrollWidth;
       thisImg.style.transform = 'perspective('+ w*3 +'px)';
 
       if (supportsTouch) {
         window.preventScroll = false;
- 
+
         (function(_thisImg,_layers,_totalLayers,_shine) {
           thisImg.addEventListener('touchmove', function(e) {
-            if (window.preventScroll){
+            if (window.preventScroll) {
               e.preventDefault();
             }
             processMovement(e,_thisImg,_layers,_totalLayers,_shine);
           });
 
-          thisImg.addEventListener('touchstart', function(e) {
+          thisImg.addEventListener('touchstart', function() {
             window.preventScroll = true;
             processEnter(_thisImg);
           });
-
 
           thisImg.addEventListener('touchend', function(e) {
             window.preventScroll = false;
             processExit(e,_thisImg,_layers,_totalLayers,_shine);
           });
-
         })(thisImg,layers,layerElems.length,shine);
-
       } else {
-
         (function(_thisImg,_layers,_totalLayers,_shine) {
-
           thisImg.addEventListener('mousemove', function(e) {
             processMovement(e,_thisImg,_layers,_totalLayers,_shine);
           });
@@ -245,19 +243,17 @@
           thisImg.addEventListener('blur', function() {
             processExit(_thisImg,_layers,_totalLayers,_shine);
           });
-
         })(thisImg,layers,layerElems.length,shine);
       }
     }
 
-    function processMovement(event, element, layers, totalLayers, shine){
-
+    function processMovement(event, element, layers, totalLayers, shine) {
       if (! event) {
         const region = getRect(element);
         event = { pageX: region.left + region.width / 2, pageY: region.top + region.height / 2 };
       }
 
-      var
+      let
         touchEnabled = ('ontouchstart' in window || navigator.msMaxTouchPoints) ? true : false,
         i = 0,
         bdst = document.body.scrollTop,
@@ -277,7 +273,7 @@
         imgCSS = 'rotateX(' + xRotate + 'deg) rotateY(' + yRotate + 'deg)', // img transform
         angle = Math.atan2(dy, dx) * 180 / Math.PI - 90; // convert rad in degrees
 
-      //get angle between 0-360
+      // get angle between 0-360
       if (angle < 0) {
         angle = angle + 360;
       }
@@ -292,8 +288,8 @@
         shine.style.transform = 'translateX(' + (offsetX * totalLayers) - 0.1 + 'px) translateY(' + (offsetY * totalLayers) - 0.1 + 'px)';
       }
 
-      //parallax for each layer
-      //var revNum = totalLayers;
+      // parallax for each layer
+      // var revNum = totalLayers;
       for (i = 0; i < totalLayers; i++) {
         layers[i].style.transform = 'translateX(' + (offsetX * (totalLayers - i)) * ((i * 2.5) / wMultiple) + 'px) translateY(' + (offsetY * totalLayers) * ((i * 2.5) / wMultiple) + 'px)';
 //        revNum--;
@@ -305,10 +301,8 @@
     }
 
     function processExit(element, layers, totalLayers, shine) {
-
-      var
-        i = 0,
-        container = element.firstChild;
+      const container = element.firstChild;
+      let i = 0;
 
       container.classList.remove('over');
       container.style.transform = '';
@@ -321,5 +315,4 @@
   };
 
   module.exports = LSR;
-
-}());
+})();

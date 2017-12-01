@@ -163,9 +163,10 @@
       const
         container = document.createElement('div'),
         shine = document.createElement('div'),
-        shadow = document.createElement('div'),
         layersHTML = document.createElement('div'),
         layers = [];
+
+      let shadow = document.createElement('div');
 
       container.className = config.prefix + '-container';
 
@@ -267,11 +268,12 @@
         dy = (pageY - offsets.top - bdst) - h / 2, // @h/2 = center of container
         dx = (pageX - offsets.left - bdsl) - w / 2, // @w/2 = center of container
         yRotate = (offsetX - dx)*(config.rotation.y * wMultiple), // rotation for container Y
-        xRotate = (dy - offsetY)*(config.rotation.x * wMultiple), // rotation for container X
-        imgCSS = 'rotateX(' + xRotate + 'deg) rotateY(' + yRotate + 'deg)', // img transform
-        angle = Math.atan2(dy, dx) * 180 / Math.PI - 90; // convert rad in degrees
+        xRotate = (dy - offsetY)*(config.rotation.x * wMultiple); // rotation for container X
 
-      let i = 0;
+      let
+        i = 0,
+        angle = Math.atan2(dy, dx) * 180 / Math.PI - 90, // convert rad in degrees
+        imgCSS = 'rotateX(' + xRotate + 'deg) rotateY(' + yRotate + 'deg)'; // img transform
 
       // get angle between 0-360
       if (angle < 0) {

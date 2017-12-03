@@ -1,8 +1,5 @@
-/*jshint esnext:true */
-/* globals module */
 
 module.exports = function(grunt) {
-
   'use strict';
 
   grunt.initConfig({
@@ -15,31 +12,31 @@ module.exports = function(grunt) {
           mangle: true
         },
         files: {
-          'site/assets/js/treeera.js' : ['src/scripts/backdrop.js', 'src/scripts/popover.js', 'src/scripts/treeera.js']
+          'site/assets/js/treeera.js': ['src/scripts/backdrop.js', 'src/scripts/popover.js', 'src/scripts/treeera.js']
         }
       }
     },
 */
-    compass : {
-      dist : {
-        options : {
-          sassDir : 'src/styles',
-          cssDir : 'docs/build',
-          environment : 'production',
-          outputStyle : 'compressed'
+    compass: {
+      dist: {
+        options: {
+          sassDir: 'src/styles',
+          cssDir: 'docs/build',
+          environment: 'production',
+          outputStyle: 'compressed'
         }
       }
     },
 
-    watch : {
-      css : {
-        files : ['src/styles/*.scss'],
-        tasks : ['compass']
+    watch: {
+      css: {
+        files: ['src/styles/*.scss'],
+        tasks: ['compass']
       }
-      /*,
+      /* ,
       js : {
-        files : ['src/scripts/*.js'],
-        tasks : ['uglify']
+        files: ['src/scripts/*.js'],
+        tasks: ['uglify']
       }
       */
     }

@@ -1,13 +1,10 @@
-/*jshint esnext:true */
-/* globals require, __dirname, module */
-
 
 const
     path = require('path');
 //    webpack = require('webpack');
 
-//const ExtractTextPlugin = require('extract-text-webpack-plugin');
-//const extractCSS = new ExtractTextPlugin('[name].bundle.css');
+// const ExtractTextPlugin = require('extract-text-webpack-plugin');
+// const extractCSS = new ExtractTextPlugin('[name].bundle.css');
 
 const config = {
   entry: './src/scripts/index.js',
@@ -15,9 +12,9 @@ const config = {
     path: path.resolve(__dirname, 'docs/build/'),
     filename: 'lsr.bundle.js'
   },
-  watch : true,
-  module : {
-    rules : [
+  watch: true,
+  module: {
+    rules: [
 /*
     { test: /\.scss$/, use: [
       { loader: "style-loader" }, // creates style nodes from JS strings
@@ -25,20 +22,18 @@ const config = {
       { loader: "sass-loader" } // compiles Sass to CSS
     ]},
 */
-    {
-      test : /\.js$/,
-      include : path.resolve(__dirname, 'src'),
-      use : [{
-        loader: 'babel-loader',
-        options : {
-          presets : [
-//            ['es2015', { modules : false }]
-          ]
-        }
-      }]
-    }
-    
-    
+      {
+        test: /\.js$/,
+        include: path.resolve(__dirname, 'src'),
+        use: [{
+          loader: 'babel-loader',
+          options: {
+            presets: [
+  //            ['es2015', { modules : false }]
+            ]
+          }
+        }]
+      }
     ]
   }
 };

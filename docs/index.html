@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="utf-8">
   <title>LSR</title>
-  <script src="build/lsr.bundle.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://davidfmiller.github.io/man/man.css">
   <link rel="stylesheet" type="text/css" href="build/lsr.css">
   <style type="text/css">
     body { 
-      background: #fff;
-      font-family: sans-serif;
-      color: rgba(0,0,0,0.2);
+
     }
 
     img {
@@ -21,9 +20,10 @@
       width: 200px;
       height: 200px;
       cursor: pointer;
-      margin: 100px auto 0 auto;
+      margin: 0 auto 0 auto;
     }
 
+/*
     footer {
       padding-top: 10px;
       width: 200px;
@@ -31,15 +31,11 @@
       border-top: 1px solid rgba(0,0,0,0.2);
       text-align: center;
     }
-
-    a {
-      text-decoration: none;
+*/
+    .lsr {
+      z-index: 1;
     }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
+    
     .lsr .router {
       background-image: url(icon.png);
     }
@@ -53,10 +49,29 @@
   </style>
 </head>
 <body>
+  
+  <div id="man">
 
-  <div class="lsr" tabindex="1">
-    <div class="lsr-layer" data-class="router">Text content for layer goes here</div>
-  </div>
+    <h1><i>👀</i> lsr</h1>
+    <p>
+      Add perspective to your site.
+    </p>
+
+    <div class="lsr" tabindex="1">
+      <div class="lsr-layer" data-class="router">Text content for layer goes here</div>
+    </div>
+
+    <pre>new window.LSR({
+  node : null,
+  shadow : false,
+  shine : false,
+  scale : 1.1,
+  rotation : {
+    x : 0.5,
+    y : 0.1
+  }
+});</pre>
+
 
 <!--
   <label>
@@ -67,23 +82,33 @@
   </label>
 -->
 
+  <hr>
   <footer>
-    <a href="https://github.com/davidfmiller/lsr">LSR</a>
-    by <a href="https://readmeansrun.com" title="READMEANSRUN">READMEANSRUN</a>
+    <p>  
+      <a href="https://github.com/davidfmiller/lsr">LSR</a>
+      by
+      <a href="https://readmeansrun.com" title="READMEANSRUN">READMEANSRUN</a>
+    </p>
   </footer>
 
+  </div>
+
+  <script src="build/lsr.bundle.js"></script>
+  <script src="https://davidfmiller.github.io/man/man.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function(event) {
       new window.LSR({
         node : null,
-        shadow : false,
-        shine : false,
-        scale : 1.1,
+        shadow : true,
+        shine : true,
+        scale : 1.5,
         rotation : {
           x : 0.1,
           y : 0.1
         }
       });
+      
+      window.Man({pre: true});
     });
   </script>
 </body>

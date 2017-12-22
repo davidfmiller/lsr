@@ -19,76 +19,8 @@
 
   const
   // VERSION = '0.0.1',
-
-  /*
-   * Convert an array-like thing (ex: NodeList or arguments object) into a proper array
-   *
-   * @param list (array-like thing)
-   * @return Array
-   */
-  arr = function(list) {
-    const ret = [];
-    let i = 0;
-
-    if (! list.length) {
-      return ret;
-    }
-
-    for (i = 0; i < list.length; i++) {
-      ret.push(list[i]);
-    }
-
-    return ret;
-  },
-
-  /*
-   * Retrieve an object containing { top : xx, left : xx, bottom: xx, right: xx, width: xx, height: xx }
-   *
-   * @param node (DOMNode)
-   */
-  getRect = function(node) {
-    const
-    rect = node.getBoundingClientRect(),
-    ret = { top: rect.top, left: rect.left, bottom: rect.bottom, right: rect.right }; // create a new object that is not read-only
-
-    ret.top += window.pageYOffset;
-    ret.left += window.pageXOffset;
-
-    ret.bottom += window.pageYOffset;
-    ret.right += window.pageYOffset;
-
-    ret.width = rect.right - rect.left;
-    ret.height = rect.bottom - rect.top;
-
-    return ret;
-  },
-
-  /*
-   * Merge two objects into one, values in b take precedence over values in a
-   *
-   * @param a {Object}
-   * @param b {Object}
-
-   * @return Object
-   */
-  merge = function(a, b) {
-    const o = {};
-    let i;
-    for (i in a) {
-      if (a.hasOwnProperty(i)) {
-        o[i] = a[i];
-      }
-    }
-    if (! b) {
-      return o;
-    }
-    for (i in b) {
-      if (b.hasOwnProperty(i)) {
-        o[i] = b[i];
-      }
-    }
-    return o;
-  };
+  
+  RMR = require('rmr-util');
 
   /**
    * Create an LSR instance
@@ -112,7 +44,7 @@
         y: 0.05
       }
     },
-    config = merge(defaults, arg) || defaults,
+    config = RMR.Object.merge(defaults, arg) || defaults,
     supportsTouch = 'ontouchstart' in window || navigator.msMaxTouchPoints;
 
     if (! config.node) {
@@ -134,7 +66,7 @@
       config.rotation.y = defaults.rotation.y;
     }
 
-    imgs = arr(config.node.querySelectorAll('.' + config.prefix));
+    imgs = RMR.Array.coerce(config.node.querySelectorAll('.' + config.prefix));
     if (config.node.classList.contains(config.prefix)) {
       imgs.push(config.node);
     }
@@ -249,7 +181,7 @@
 
     function processMovement(event, element, layers, totalLayers, shine) {
       if (! event) {
-        const region = getRect(element);
+        const region = RMR.Node.getRect(element);
         event = { pageX: region.left + region.width / 2, pageY: region.top + region.height / 2 };
       }
 

@@ -82,7 +82,7 @@
       </label>
 
       <label>
-        <input type="checkbox" class="" name="shine" value="1"> <span>Shine</span>
+        <input type="checkbox" class="shine" name="shine" value="1"> <span>Shine</span>
       </label>
       <button>Destroy</button>
     </form>
@@ -127,22 +127,26 @@
       var lsr,
       init = function() {
 
-        var div = document.getElementById('target');
+        var
+        div = document.getElementById('target'),
+        obj = {
+          node : null,
+          shadow : true,
+          shine : document.querySelector('input.shine').checked,
+          scale : parseInt(document.querySelector('input.scale').value, 10) / 100 + 1,
+          rotation : {
+            x : parseInt(document.querySelector('input.rotation-x').value, 10) / 100,
+            y : parseInt(document.querySelector('input.rotation-y').value, 10) / 100
+          }
+        };
+
+        console.log(obj);
 
         div.innerHTML = '<div class="lsr" tabindex="1">' + 
         '<div class="lsr-layer" data-class="router">Text content for layer goes here</div>' + 
         '</div>';
 
-        lsr = new window.LSR({
-          node : null,
-          shadow : true,
-          shine : true,
-          scale : parseInt(document.querySelector('input.scale').value, 10) / 100 + 1 ,//1.2,
-          rotation : {
-            x : 0.1,
-            y : 0.1
-          }
-        })
+        lsr = new window.LSR(obj)
       };
 
       var
@@ -155,12 +159,13 @@
         }
         init();
       };
-      
+
       for (var i in inputs) {
         if (inputs.hasOwnProperty(i)) {
           inputs[i].addEventListener('change', listener);
         }
       }
+      document.querySelector('input[type=checkbox]').addEventListener('click', listener)
 
       document.querySelector('button').addEventListener('click', function(e) { 
         e.preventDefault();

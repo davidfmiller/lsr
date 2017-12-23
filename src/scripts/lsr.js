@@ -215,7 +215,6 @@
     }
 
     this.destroy = function() {
-      console.log('destroying', listeners);
       for (const id in listeners) {
         if (listeners.hasOwnProperty(id)) {
           const node = document.getElementById(id);

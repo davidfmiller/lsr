@@ -44,6 +44,14 @@
     a:visited {
       color: rgba(237, 0, 255, 1.0);
     }
+    
+    form label {
+      display: block;
+    }
+    
+    input[type=range] {
+      width: 50px;
+    }
 
   </style>
 </head>
@@ -56,9 +64,28 @@
       Add perspective to your site.
     </p>
 
-    <div class="lsr" tabindex="1">
-      <div class="lsr-layer" data-class="router">Text content for layer goes here</div>
+    <div id="target">
     </div>
+
+    <form>
+
+      <label>
+        <input type="range" class="rotation-x" min="0" max="100"> <span>X-rotation</span>
+      </label>
+
+      <label>
+        <input type="range" class="rotation-y" min="0" max="100"> <span>Y-rotation</span>
+      </label>
+
+      <label>
+        <input type="range" class="scale" min="0" max="100"> <span>Scale</span>
+      </label>
+
+      <label>
+        <input type="checkbox" class="" name="shine" value="1"> <span>Shine</span>
+      </label>
+      <button>Destroy</button>
+    </form>
 
     <pre><span></span><span class="k">new</span> <span class="nb">window</span><span class="p">.</span><span class="nx">LSR</span><span class="p">({</span>
   <span class="nx">node</span> <span class="o">:</span> <span class="kc">null</span><span class="p">,</span> <span class="c1">// all elements with classname &#39;lsr&#39; applied</span>
@@ -96,17 +123,57 @@
   <script src="https://davidfmiller.github.io/man/man.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function(event) {
-      new window.LSR({
-        node : null,
-        shadow : true,
-        shine : true,
-        scale : 1.2,
-        rotation : {
-          x : 0.1,
-          y : 0.1
+
+      var lsr,
+      init = function() {
+
+        var div = document.getElementById('target');
+
+        div.innerHTML = '<div class="lsr" tabindex="1">' + 
+        '<div class="lsr-layer" data-class="router">Text content for layer goes here</div>' + 
+        '</div>';
+
+        lsr = new window.LSR({
+          node : null,
+          shadow : true,
+          shine : true,
+          scale : parseInt(document.querySelector('input.scale').value, 10) / 100 + 1 ,//1.2,
+          rotation : {
+            x : 0.1,
+            y : 0.1
+          }
+        })
+      };
+
+      var
+      inputs = document.querySelectorAll('form input'),
+      listener = function(e) {
+        console.log(e.target.value);
+        if (lsr) {
+          lsr.destroy();
+          lsr = null;
         }
-      });
+        init();
+      };
       
+      for (var i in inputs) {
+        if (inputs.hasOwnProperty(i)) {
+          inputs[i].addEventListener('change', listener);
+        }
+      }
+
+      document.querySelector('button').addEventListener('click', function(e) { 
+        e.preventDefault();
+        if (lsr) {
+          lsr.destroy();
+          lsr = null;
+        }
+        console.log('hi');
+        init();
+      });
+
+      init();
+
       window.Man({pre: true});
     });
   </script>

@@ -30,7 +30,8 @@
   const LSR = function(arg) {
     let
     l = 0,
-    imgs = [];
+    imgs = [],
+    listeners = {};
 
     const
     defaults = {
@@ -80,9 +81,14 @@
     }
 
     for (l = 0; l < imgs.length; l++) {
+
       const
       thisImg = imgs[l],
       layerElems = thisImg.querySelectorAll('.' + config.prefix + '-layer');
+
+      if (! thisImg.getAttribute('id')) {
+        thisImg.setAttribute('id', RMR.String.guid());
+      }
 
       if (layerElems.length <= 0) {
         continue;
@@ -136,47 +142,95 @@
         window.preventScroll = false;
 
         (function(_thisImg,_layers,_totalLayers,_shine) {
-          thisImg.addEventListener('touchmove', function(e) {
+
+          const
+          touchmove = function(e) {
             if (window.preventScroll) {
               e.preventDefault();
             }
             processMovement(e,_thisImg,_layers,_totalLayers,_shine);
-          });
-
-          thisImg.addEventListener('touchstart', function() {
+          },
+          touchstart = function() {
             window.preventScroll = true;
             processEnter(_thisImg);
-          });
-
-          thisImg.addEventListener('touchend', function(e) {
+          },
+          touchend = function(e) {
             window.preventScroll = false;
             processExit(e,_thisImg,_layers,_totalLayers,_shine);
-          });
+          };
+
+          listeners[_thisImg.getAttribute('id')] = {
+            'touchmove' : touchmove,
+            'touchstart' : touchstart,
+            'touchend' : touchend
+          };
+
+          thisImg.addEventListener('touchmove', touchmove);
+
+          thisImg.addEventListener('touchstart', touchstart);
+
+          thisImg.addEventListener('touchend', touchend);
+
         })(thisImg,layers,layerElems.length,shine);
       } else {
         (function(_thisImg,_layers,_totalLayers,_shine) {
-          thisImg.addEventListener('mousemove', function(e) {
-            processMovement(e,_thisImg,_layers,_totalLayers,_shine);
-          });
 
-          thisImg.addEventListener('focus', function() {
+          const mousemove = function(e) {
+            processMovement(e,_thisImg,_layers,_totalLayers,_shine);
+          },
+          focus = function() {
             processEnter(_thisImg);
             processMovement(null,_thisImg,_layers,_totalLayers,_shine);
-          });
-
-          thisImg.addEventListener('mouseenter', function() {
+          },
+          mouseenter = function() {
             processEnter(_thisImg);
-          });
-
-          thisImg.addEventListener('mouseleave', function() {
+          },
+          mouseleave = function() {
             processExit(_thisImg,_layers,_totalLayers,_shine);
-          });
-
-          thisImg.addEventListener('blur', function() {
+          },
+          blur = function() {
             processExit(_thisImg,_layers,_totalLayers,_shine);
-          });
+          };
+
+          listeners[_thisImg.getAttribute('id')] = {
+            'mousemove' : mousemove,
+            'focus' : focus,
+            'mouseenter' : mouseenter,
+            'mouseleave' : mouseleave,
+            'blur' : blur,
+          };
+
+          thisImg.addEventListener('mousemove', mousemove);
+
+          thisImg.addEventListener('focus', focus);
+
+          thisImg.addEventListener('mouseenter', mouseenter);
+
+          thisImg.addEventListener('mouseleave', mouseleave);
+
+          thisImg.addEventListener('blur', blur);
+
         })(thisImg,layers,layerElems.length,shine);
       }
+    }
+
+    this.destroy = function() {
+      console.log('destroying', listeners);
+      for (const id in listeners) {
+        if (listeners.hasOwnProperty(id)) {
+          const node = document.getElementById(id);
+          if (! node) {
+            continue;
+          }
+          for (const event in listeners[id]) {
+            if (listeners[id].hasOwnProperty(event)) {
+              node.removeEventListener(event, listeners[id][event])
+            }
+          }
+        }
+      }
+
+      listeners = null;
     }
 
     function processMovement(event, element, layers, totalLayers, shine) {

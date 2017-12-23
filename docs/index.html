@@ -5,6 +5,9 @@
   <title>LSR</title>
   <link rel="stylesheet" type="text/css" href="https://davidfmiller.github.io/man/man.css">
   <link rel="stylesheet" type="text/css" href="build/lsr.css">
+  <meta name="viewport" value="width=800">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <style type="text/css">
     body {
     }
@@ -70,21 +73,20 @@
     <form>
 
       <label>
-        <input type="range" class="rotation-x" min="0" max="100"> <span>X-rotation</span>
+        <input type="range" class="rotation-x" min="0" max="100" value="10"> <span>X-rotation</span>
       </label>
 
       <label>
-        <input type="range" class="rotation-y" min="0" max="100"> <span>Y-rotation</span>
+        <input type="range" class="rotation-y" min="0" max="100" value="10"> <span>Y-rotation</span>
       </label>
 
       <label>
-        <input type="range" class="scale" min="0" max="100"> <span>Scale</span>
+        <input type="range" class="scale" min="0" max="100" value="20"> <span>Scale</span>
       </label>
 
       <label>
         <input type="checkbox" class="shine" name="shine" value="1"> <span>Shine</span>
       </label>
-      <button>Destroy</button>
     </form>
 
     <pre><span></span><span class="k">new</span> <span class="nb">window</span><span class="p">.</span><span class="nx">LSR</span><span class="p">({</span>
@@ -152,7 +154,6 @@
       var
       inputs = document.querySelectorAll('form input'),
       listener = function(e) {
-        console.log(e.target.value);
         if (lsr) {
           lsr.destroy();
           lsr = null;
@@ -166,16 +167,6 @@
         }
       }
       document.querySelector('input[type=checkbox]').addEventListener('click', listener)
-
-      document.querySelector('button').addEventListener('click', function(e) { 
-        e.preventDefault();
-        if (lsr) {
-          lsr.destroy();
-          lsr = null;
-        }
-        console.log('hi');
-        init();
-      });
 
       init();
 

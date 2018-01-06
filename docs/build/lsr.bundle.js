@@ -203,6 +203,7 @@
 
         layer.className = layerElems[i].getAttribute('data-class');
         layersHTML.appendChild(layer);
+        layer.style.zIndex = layerElems.length - i;
 
         layers.push(layer);
       }

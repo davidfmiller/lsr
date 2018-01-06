@@ -19,7 +19,7 @@
 
   const
   // VERSION = '0.0.1',
-  
+
   RMR = require('rmr-util');
 
   /**
@@ -160,9 +160,9 @@
           };
 
           listeners[_thisImg.getAttribute('id')] = {
-            'touchmove' : touchmove,
-            'touchstart' : touchstart,
-            'touchend' : touchend
+            'touchmove': touchmove,
+            'touchstart': touchstart,
+            'touchend': touchend
           };
 
           thisImg.addEventListener('touchmove', touchmove);
@@ -193,11 +193,11 @@
           };
 
           listeners[_thisImg.getAttribute('id')] = {
-            'mousemove' : mousemove,
-            'focus' : focus,
-            'mouseenter' : mouseenter,
-            'mouseleave' : mouseleave,
-            'blur' : blur,
+            'mousemove': mousemove,
+            'focus': focus,
+            'mouseenter': mouseenter,
+            'mouseleave': mouseleave,
+            'blur': blur
           };
 
           thisImg.addEventListener('mousemove', mousemove);
@@ -223,14 +223,14 @@
           }
           for (const event in listeners[id]) {
             if (listeners[id].hasOwnProperty(event)) {
-              node.removeEventListener(event, listeners[id][event])
+              node.removeEventListener(event, listeners[id][event]);
             }
           }
         }
       }
 
       listeners = null;
-    }
+    };
 
     function processMovement(event, element, layers, totalLayers, shine) {
       if (! event) {

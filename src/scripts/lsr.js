@@ -40,7 +40,7 @@
       prefix: 'lsr',
       node: document.body,
       shine: true,
-      scale : 1,
+      scale: 1,
       shadow: true,
       rotation: {
         x: 0.05,

@@ -78,7 +78,6 @@
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* jshint undef: true,strict:true,trailing:true,loopfunc:true */
 /* global document,window,Element,module,console */
 
 // https://developer.apple.com/tvos/human-interface-guidelines/icons-and-images/layered-images/
@@ -113,12 +112,13 @@
         listeners = {};
 
     const defaults = {
-      layerNodeName: 'DIV',
+      layerNodeName: 'DIV', // layer node name under .lsr
       parallax: 0.5,
-      log: true,
+      debug: true,
       prefix: 'lsr',
       node: document.body,
       shine: true,
+      scale: 1,
       shadow: true,
       rotation: {
         x: 0.05,
@@ -154,7 +154,7 @@
 
     // no .lsr elements to process
     if (imgs.length === 0) {
-      if (defaults.log) {
+      if (defaults.debug) {
         window.console.log('No layers');
       }
       return;
@@ -163,7 +163,7 @@
     for (l = 0; l < imgs.length; l++) {
 
       const thisImg = imgs[l],
-            layerElems = RMR.Array.coerce(thisImg.childNodes).filter(e => e.nodeName.toUpperCase() == config.layerNodeName);
+            layerElems = RMR.Array.coerce(thisImg.childNodes).filter(e => e.nodeName.toUpperCase() === config.layerNodeName);
 
       if (!thisImg.getAttribute('id')) {
         thisImg.setAttribute('id', RMR.String.guid());
@@ -203,13 +203,9 @@
       for (let i = 0; i < layerElems.length; i++) {
         const layer = document.createElement('div');
 
-        //        let cls = RMR.Array.remove(layerElems[i].classList, 'lsr-layer');
-        //        console.log(cls);
-
         layer.className = layerElems[i].className ? layerElems[i].className : '';
 
         layersHTML.appendChild(layer);
-        //        layer.style.zIndex = layerElems.length - i;
         layer.innerHTML = layerElems[i].innerHTML;
 
         layers.push(layer);

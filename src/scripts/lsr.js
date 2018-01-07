@@ -1,4 +1,3 @@
-/* jshint undef: true,strict:true,trailing:true,loopfunc:true */
 /* global document,window,Element,module,console */
 
 // https://developer.apple.com/tvos/human-interface-guidelines/icons-and-images/layered-images/
@@ -37,10 +36,11 @@
     defaults = {
       layerNodeName: 'DIV', // layer node name under .lsr
       parallax: 0.5,
-      log: true,
+      debug: true,
       prefix: 'lsr',
       node: document.body,
       shine: true,
+      scale : 1,
       shadow: true,
       rotation: {
         x: 0.05,
@@ -76,7 +76,7 @@
 
     // no .lsr elements to process
     if (imgs.length === 0) {
-      if (defaults.log) {
+      if (defaults.debug) {
         window.console.log('No layers');
       }
       return;

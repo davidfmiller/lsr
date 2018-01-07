@@ -10,6 +10,15 @@
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="mask-icon" href="favicon.svg" color="#50E3C2">
+
+  <meta property="og:title" content="LSR">
+  <meta property="og:description" content="Add perspective to your site">
+  <meta property="og:email" content="davidfmiller@me.com">
+  <meta property="og:url" content="https://davidfmiller.github.io/lsr">
+  <meta property="fb:admins" content="eldaverino">
+  <meta property="og:image" content="./og-image.png">
 
   <style type="text/css">
 
@@ -20,23 +29,17 @@
       margin: 0 auto 0 auto;
     }
 
-    .lsr .router {
-      background: #eee;
-    }
-
-    #target .lsr-layers div {
+    .lsr-layers div {
       border-radius: 20px;
     }
 
-    .lsr .thing {
-      text-align: center;
-      font-size: 100px;
-      padding: 40px 50px 50px 50px;
-      text-shadow: 0px 0px 5px rgba(0,0,0,0.05);
-      color: #fff;
-      font-weight: bold;
-      display: table-cell;
-      vertical-align: center;
+    .lsr .bg {
+      background: #50E3C2;
+    }
+
+    .lsr .icon {
+      background-image: url(data:image/svg+xml;charset=UTF-8;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgdmlld0JveD0iMCAwIDMyMCAzMjAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PHRpdGxlPm1hc2staWNvbjwvdGl0bGU+PGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+PGcgaWQ9IlBhZ2UtMSIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PGcgaWQ9Im1hc2staWNvbiIgZmlsbD0iI2ZmZiI+PHBhdGggZD0iTS01LjY4NDM0MTg5ZS0xNCwyOTYuMjg5NjY5IEwtNS42ODQzNDE4OWUtMTQsOTcuOTEzMjI5OSBDLTUuNjg0MzQxODllLTE0LDg0LjgxODgwNDIgMTAuNDY0MjQ5OSw3NC4yMDI4OTg2IDIzLjM3MTYxMjMsNzQuMjAyODk4NiBMNTIuOTc1NjU0Niw3NC4yMDI4OTg2IEM1NS4xMjY5NTIxLDc0LjIwMjg5ODYgNTYuODcwOTIzMyw3NS45NzIxNDQ3IDU2Ljg3MDkyMzMsNzguMTU0NjIwNCBMNTYuODcwOTIzMywxMDkuNzY4Mzk2IEM1Ni44NzA5MjMzLDExMS45NTA4NzEgNTUuMTI2OTUyMSwxMTMuNzIwMTE3IDUyLjk3NTY1NDYsMTEzLjcyMDExNyBMNDYuNzQzMjI0NiwxMTMuNzIwMTE3IEM0Mi40NDA1MTA4LDExMy43MjAxMTcgMzguOTUyNjg3MiwxMTcuMjU5MjggMzguOTUyNjg3MiwxMjEuNjIzNTYxIEwzOC45NTI2ODcyLDI3Mi41NzkzMzcgQzM4Ljk1MjY4NzIsMjc2Ljk0NDQwOSA0Mi40NDA1MTA4LDI4MC40ODI3ODEgNDYuNzQzMjI0NiwyODAuNDgyNzgxIEwxOTUuNTQyNDksMjgwLjQ4Mjc4MSBDMTk5Ljg0NTIwMywyODAuNDgyNzgxIDIwMy4zMzMwMjcsMjc2Ljk0NDQwOSAyMDMuMzMzMDI3LDI3Mi41NzkzMzcgTDIwMy4zMzMwMjcsMjYzLjg4NTU0OSBDMjAzLjMzMzAyNywyNjEuNzAzMDczIDIwNS4wNzY5OTgsMjU5LjkzMzgyNyAyMDcuMjI4Mjk2LDI1OS45MzM4MjcgTDIzOC4zOTA0NDYsMjU5LjkzMzgyNyBDMjQwLjU0MTc0MywyNTkuOTMzODI3IDI0Mi4yODU3MTQsMjYxLjcwMzA3MyAyNDIuMjg1NzE0LDI2My44ODU1NDkgTDI0Mi4yODU3MTQsMjk2LjI4OTY2OSBDMjQyLjI4NTcxNCwzMDkuMzg0MDk0IDIzMS44MjE0NjQsMzIwIDIxOC45MTQxMDIsMzIwIEwyMy4zNzE2MTIzLDMyMCBDMTAuNDY0MjQ5OSwzMjAgLTUuNjg0MzQxODllLTE0LDMwOS4zODQwOTQgLTUuNjg0MzQxODllLTE0LDI5Ni4yODk2NjkgWiBNMTAxLjA4NTg5OCwwIEM4OC4xNzg1MzU2LDAgNzcuNzE0Mjg1NywxMC42MTU5MDU3IDc3LjcxNDI4NTcsMjMuNzEwMzMxMyBMNzcuNzE0Mjg1NywyMjIuMDg2NzcgQzc3LjcxNDI4NTcsMjM1LjE4MTk4NiA4OC4xNzg1MzU2LDI0NS43OTcxMDEgMTAxLjA4NTg5OCwyNDUuNzk3MTAxIEwyOTYuNjI4Mzg4LDI0NS43OTcxMDEgQzMwOS41MzY1MjksMjQ1Ljc5NzEwMSAzMjAsMjM1LjE4MTk4NiAzMjAsMjIyLjA4Njc3IEwzMjAsMjMuNzEwMzMxMyBDMzIwLDEwLjYxNTkwNTcgMzA5LjUzNjUyOSwwIDI5Ni42MjgzODgsMCBMMTAxLjA4NTg5OCwwIFogTTExNi42NjY5NzMsMTk4LjM3NjQzOSBMMTE2LjY2Njk3Myw0Ny40MjA2NjI3IEMxMTYuNjY2OTczLDQzLjA1NTU5MDcgMTIwLjE1NDc5NywzOS41MTcyMTg5IDEyNC40NTc1MSwzOS41MTcyMTg5IEwyNzMuMjU2Nzc1LDM5LjUxNzIxODkgQzI3Ny41NTk0ODksMzkuNTE3MjE4OSAyODEuMDQ3MzEzLDQzLjA1NTU5MDcgMjgxLjA0NzMxMyw0Ny40MjA2NjI3IEwyODEuMDQ3MzEzLDE5OC4zNzY0MzkgQzI4MS4wNDczMTMsMjAyLjc0MTUxMSAyNzcuNTU5NDg5LDIwNi4yNzk4ODMgMjczLjI1Njc3NSwyMDYuMjc5ODgzIEwxMjQuNDU3NTEsMjA2LjI3OTg4MyBDMTIwLjE1NDc5NywyMDYuMjc5ODgzIDExNi42NjY5NzMsMjAyLjc0MTUxMSAxMTYuNjY2OTczLDE5OC4zNzY0MzkgWiIgaWQ9ImZ1bGwiLz48L2c+PC9nPjwvc3ZnPgo=);
+      background-size: 50% 50%;
     }
 
     form label {
@@ -138,14 +141,14 @@
         console.log(obj);
 
         div.innerHTML = '<div class="lsr" tabindex="1">' +
-        '<div class="router"></div>' +
+        '<div class="bg"></div>' +
 //        '<div class="buh"></div>' +
 //        '<div class="lsr-layer"></div>' +
 //        '<div class="lsr-layer"></div>' +
 //        '<div class="lsr-layer"></div>' +
 //        '<div class="lsr-layer"></div>' +
 //        '<div class="lsr-layer"></div>' +
-        '<div class="thing">🏡</div>' +
+        '<div class="icon"></div>' +
         '</div>';
 
         lsr = new window.LSR(obj)

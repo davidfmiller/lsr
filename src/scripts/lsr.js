@@ -35,6 +35,8 @@
 
     const
     defaults = {
+      layerNodeName : 'DIV',
+      parallax : 0.5,
       log: true,
       prefix: 'lsr',
       node: document.body,
@@ -84,7 +86,8 @@
 
       const
       thisImg = imgs[l],
-      layerElems = thisImg.querySelectorAll('.' + config.prefix + '-layer');
+      layerElems = RMR.Array.coerce(thisImg.childNodes).filter(e => e.nodeName.toUpperCase() ==  config.layerNodeName);
+
 
       if (! thisImg.getAttribute('id')) {
         thisImg.setAttribute('id', RMR.String.guid());
@@ -125,9 +128,10 @@
       for (let i = 0; i < layerElems.length; i++) {
         const layer = document.createElement('div');
 
-        layer.className = layerElems[i].getAttribute('data-class');
+        layer.className = layerElems[i].className ? layerElems[i].className : '';
+
         layersHTML.appendChild(layer);
-        layer.style.zIndex = layerElems.length - i;
+        layer.innerHTML = layerElems[i].innerHTML;
 
         layers.push(layer);
       }
@@ -248,7 +252,7 @@
         offsets = element.getBoundingClientRect(),
         w = element.clientWidth || element.offsetWidth || element.scrollWidth, // width
         h = element.clientHeight || element.offsetHeight || element.scrollHeight, // height
-        wMultiple = 320/w,
+        wMultiple = 500/w,
         offsetX = 0.52 - (pageX - offsets.left - bdsl)/w, // cursor position X
         offsetY = 0.52 - (pageY - offsets.top - bdst)/h, // cursor position Y
         dy = (pageY - offsets.top - bdst) - h / 2, // @h/2 = center of container
@@ -276,11 +280,13 @@
         shine.style.transform = 'translateX(' + (offsetX * totalLayers) - 0.1 + 'px) translateY(' + (offsetY * totalLayers) - 0.1 + 'px)';
       }
 
-      // parallax for each layer
-      // var revNum = totalLayers;
+      let revNum = 0; // totalLayers;
+      const factor = config.parallax * 100;
       for (i = 0; i < totalLayers; i++) {
-        layers[i].style.transform = 'translateX(' + (offsetX * (totalLayers - i)) * ((i * 2.5) / wMultiple) + 'px) translateY(' + (offsetY * totalLayers) * ((i * 2.5) / wMultiple) + 'px)';
-//        revNum--;
+//        layers[i].style.transform = 'translateX(' + (offsetX * (totalLayers - i)) * ((i * 2.5) / wMultiple) + 'px) translateY(' + (offsetY * totalLayers) * ((i * 2.5) / wMultiple) + 'px)';
+        layers[i].style.transform = 'translateX(' + (offsetX * revNum) * ((i * factor) / wMultiple) + 'px) translateY(' + (offsetY * revNum) * ((i * factor) / wMultiple) + 'px)';
+
+        revNum++;
       }
     }
 

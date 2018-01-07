@@ -113,6 +113,8 @@
         listeners = {};
 
     const defaults = {
+      layerNodeName: 'DIV',
+      parallax: 0.5,
       log: true,
       prefix: 'lsr',
       node: document.body,
@@ -161,7 +163,7 @@
     for (l = 0; l < imgs.length; l++) {
 
       const thisImg = imgs[l],
-            layerElems = thisImg.querySelectorAll('.' + config.prefix + '-layer');
+            layerElems = RMR.Array.coerce(thisImg.childNodes).filter(e => e.nodeName.toUpperCase() == config.layerNodeName);
 
       if (!thisImg.getAttribute('id')) {
         thisImg.setAttribute('id', RMR.String.guid());
@@ -201,9 +203,14 @@
       for (let i = 0; i < layerElems.length; i++) {
         const layer = document.createElement('div');
 
-        layer.className = layerElems[i].getAttribute('data-class');
+        //        let cls = RMR.Array.remove(layerElems[i].classList, 'lsr-layer');
+        //        console.log(cls);
+
+        layer.className = layerElems[i].className ? layerElems[i].className : '';
+
         layersHTML.appendChild(layer);
-        layer.style.zIndex = layerElems.length - i;
+        //        layer.style.zIndex = layerElems.length - i;
+        layer.innerHTML = layerElems[i].innerHTML;
 
         layers.push(layer);
       }
@@ -322,7 +329,7 @@
             // width
       h = element.clientHeight || element.offsetHeight || element.scrollHeight,
             // height
-      wMultiple = 320 / w,
+      wMultiple = 500 / w,
             offsetX = 0.52 - (pageX - offsets.left - bdsl) / w,
             // cursor position X
       offsetY = 0.52 - (pageY - offsets.top - bdst) / h,
@@ -355,11 +362,13 @@
         shine.style.transform = 'translateX(' + offsetX * totalLayers - 0.1 + 'px) translateY(' + offsetY * totalLayers - 0.1 + 'px)';
       }
 
-      // parallax for each layer
-      // var revNum = totalLayers;
+      let revNum = 0; // totalLayers;
+      const factor = config.parallax * 100;
       for (i = 0; i < totalLayers; i++) {
-        layers[i].style.transform = 'translateX(' + offsetX * (totalLayers - i) * (i * 2.5 / wMultiple) + 'px) translateY(' + offsetY * totalLayers * (i * 2.5 / wMultiple) + 'px)';
-        //        revNum--;
+        //        layers[i].style.transform = 'translateX(' + (offsetX * (totalLayers - i)) * ((i * 2.5) / wMultiple) + 'px) translateY(' + (offsetY * totalLayers) * ((i * 2.5) / wMultiple) + 'px)';
+        layers[i].style.transform = 'translateX(' + offsetX * revNum * (i * factor / wMultiple) + 'px) translateY(' + offsetY * revNum * (i * factor / wMultiple) + 'px)';
+
+        revNum++;
       }
     }
 
@@ -390,26 +399,47 @@
 
 /* global require, module, console, Promise */
 
-(function() {
+(() => {
 
   'use strict';
+
+  /**
+   * rmr-util
+   *
+   * JS for your browser
+   *
+   *
+   *
+   */
+
+  if (typeof window !== 'undefined') {
+    window.document.addEventListener('DOMContentLoaded', () => {
+      document.body.classList.add('rmr-js');
+    });
+  }
+
+
+
 
   const
 
   /**
-    Determine if a string is a valid internet URL
-
-    @param {String} str - the string to be tested
-    @return {Bool} - `true` of `false`
+   * Determine if a string is a valid internet URL
+   *
+   * @param {String} str - the string to be tested
+   * @return {Bool} - `true` of `false`
    */
   isURL = function(str) {
+    // ???
     return /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(str);
   },
 
-  /*
+  /**
+   * Determine if a node matches a provided selector
    *
-   * @param node {HTMLElement}
-   * @param styles {Object}
+   * @param {HTMLElement} node  the element to be tested
+   * @param {String} selector the selector string to test
+   * @return {Bool} `true` or `false`
    */
   selectorMatches = function (node, selector) {
 
@@ -475,11 +505,11 @@
     return o;
   },
 
-  /*
-   * Convert an array-like thing (ex: NodeList or arguments object) into a proper array
+  /**
+   * Convert an array-like thing (ex: NodeList or arguments object) into a proper array, or convert a scalar into a single-element array
    *
-   * @param list (array-like thing)
-   * @return Array
+   * @param {Mixed} list an array-like thing or a scalar
+   * @return {Array} the param as an array
    */
   arr = function(list) {
 
@@ -490,8 +520,8 @@
       return list;
     }
 
-    if (! list.length) {
-      return ret;
+    if (typeof list.length !== 'number') {
+      return [list];
     }
 
     for (i = 0; i < list.length; i++) {
@@ -499,6 +529,18 @@
     }
 
     return ret;
+  },
+
+
+  /**
+   * Remove an object from an array
+   *
+   * @param {Array} array containing object to be removed
+   * @param {Any} item to be removed
+   * @return {Array} array for chaining
+   */
+  arrayRemove = function(array, item) {
+    return arr(array).filter(e => e !== item);
   },
 
   /**
@@ -538,7 +580,7 @@
   /**
    * Make loader
    *
-   * @return {Element} SVG element
+   * @return {String} SVG element
    */
   loader = function() {
 
@@ -557,7 +599,7 @@
       'xml:space': 'preserve'
     });
 
-    svg.innerHTML = 
+    svg.innerHTML =
     '<path opacity="0.2" fill="#000" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946 s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634 c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"></path>' +
     '<path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0 C22.32,8.481,24.301,9.057,26.013,10.047z">' +
     '<animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 20 20" to="360 20 20" dur="0.8s" repeatCount="indefinite"></animateTransform>' +
@@ -684,7 +726,7 @@
       return '';
     }
 
-    return Object.keys(obj).reduce(function(a,k) {
+    return Object.keys(obj).reduce((a,k) => {
       a.push(k + '=' + encodeURIComponent(obj[k]));
       return a;
     },[]).join('&');
@@ -693,6 +735,7 @@
   /**
    * Generate an object containing keys/values corresponding to form elements
    *
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/FormData/Using_FormData_Objects
    * @param {Element} form element
    * @return {Object} the key/value pairs for the form
    */
@@ -701,6 +744,12 @@
     form = getElement(form);
     if (! form) {
       return {};
+    }
+
+    if (typeof FormData !== 'undefined') {
+//      const f = new FormData(form);
+//      console.log(f);
+//      return f;
     }
 
     const
@@ -732,10 +781,11 @@
   },
 
   /**
-   * 
+   * Get a node's ancestor
    *
    * @param {Element} node starting point of search
    * @param {String} ancestor the selector for the ancestor we're looking for
+   * @param {Bool} includeSelf optionally include starting point in search
    * @return {Element} or `null` if no such ancestor exists
    */
   ancestor = function(node, ancestor, includeSelf) {
@@ -751,7 +801,7 @@
 
     let parent = node;
 
-    while (parent = parent.parentNode) {
+    while ((parent = parent.parentNode) !== null) {
       if (selectorMatches(parent, ancestor)) {
         return parent;
       }
@@ -759,17 +809,18 @@
 
     return null;
   },
-  
+
   /**
-   * 
+   * Remove a DOM node from the document
    *
    * @param {Element} node the node to be removed
+   * @return {Bool} `true` if removed'; `false` if the node doesn't exist
    */
   removeNode = function(node) {
 
     node = getElement(node);
     if (! node) {
-      return null;
+      return false;
     }
 
     node.parentNode.removeChild(node);
@@ -780,6 +831,14 @@
   /**
    * Make an XHR request
    *
+   * {
+   *   url: '',
+   *   method: '',
+   *   headers: [],
+   *   params: {}
+   * }
+   *
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
    * @param {Object} config url, method, params, form
    * @param {Function} handler invoked on completion
    * @return {XMLHttpRequest} object making the request
@@ -790,9 +849,11 @@
       return null;
     }
 
-    const defaults = {
+    const
+    defaults = {
       form: null,
       url: '/',
+      headers: {},
       method: 'get',
       params: null
     };
@@ -816,17 +877,42 @@
       }
     };
 
-    let url = config.url;
-    if (config.method.toUpperCase() === 'GET' && config.params) {
-      url = url + '?' + queryString(config.params);
+    let
+    url = config.url,
+    params = '';
+
+    if (config.method.toUpperCase() === 'GET') {
+      url = config.params ? (url + '?' + queryString(config.params)) : url;
+
+    } else { // post
+      params = queryString(config.params);
+      config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
     }
 
+    config.headers['X-Requested-With'] = 'XMLHttpRequest';
+
     xhttp.open(config.method, url, true);
-    xhttp.send();
+
+    for (const h in config.headers) {
+      if (config.headers.hasOwnProperty(h)) {
+        xhttp.setRequestHeader(h, config.headers[h]);
+      }
+    }
+
+    xhttp.send(params);
 
     return xhttp;
   },
 
+  /**
+   *
+   *
+   *
+
+  dataFromNode = function(node) {
+
+  },
+   */
 
   /**
    * Retrieve the last non-empty element of an array
@@ -850,6 +936,7 @@
     return null;
   };
 
+
   module.exports = {
     Browser: {
       isTouch: isTouch
@@ -861,16 +948,19 @@
     },
     Array: {
       coerce: arr,
-      last: lastValue
+      last: lastValue,
+      remove: arrayRemove
     },
     Object: {
       merge: merge,
+      fromForm: objectFromForm,
       queryString: queryString
     },
     XHR: {
       request: xhrRequest
     },
     Node: {
+//      data: dataFromNode,
       ancestor: ancestor,
       matches: selectorMatches,
       remove: removeNode,
@@ -883,23 +973,6 @@
   };
 
 })();
-
-
-/*
-if (require.main === module) {
-
-  if (process.argv.length === 3) {
-    retrieveMetadata(process.argv[2]).then(function(meta) {
-      console.log(JSON.stringify(meta));
-    }).catch(function(err) {
-      console.log('🚫  ' + err);
-    });
-  } else {
-    console.log('🚫  No URL provided');
-  }
-}
-*/
-
 
 
 /***/ })

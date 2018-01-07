@@ -35,8 +35,8 @@
 
     const
     defaults = {
-      layerNodeName : 'DIV',
-      parallax : 0.5,
+      layerNodeName: 'DIV', // layer node name under .lsr
+      parallax: 0.5,
       log: true,
       prefix: 'lsr',
       node: document.body,
@@ -86,7 +86,7 @@
 
       const
       thisImg = imgs[l],
-      layerElems = RMR.Array.coerce(thisImg.childNodes).filter(e => e.nodeName.toUpperCase() ==  config.layerNodeName);
+      layerElems = RMR.Array.coerce(thisImg.childNodes).filter(e => e.nodeName.toUpperCase() ===  config.layerNodeName);
 
 
       if (! thisImg.getAttribute('id')) {

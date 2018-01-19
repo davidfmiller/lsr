@@ -1,4 +1,4 @@
-# curl https://raw.githubusercontent.com/davidfmiller/dotfiles/master/dotgitignore > ./.gitignore
+# curl https://raw.githubusercontent.com/davidfmiller/dotfiles/master/dotgitignore > .gitignore
 
 # logs
 npm-debug.log

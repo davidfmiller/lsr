@@ -10,7 +10,7 @@
   "homepage": "https://github.com/davidfmiller/rmr-lsr#readme",
   "license": "ISC",
   "dependencies": {
-    "rmr-util": "^1.0.7"
+    "rmr-util": "^1.1.63"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

@@ -1,13 +1,13 @@
 {
-  "name": "lsr",
-  "version": "1.0.2",
+  "name": "rmr-lsr",
+  "version": "1.1.0",
   "description": "Add perspective to your site",
   "scripts": {},
   "author": "davidfmiller",
   "bugs": {
-    "url": "https://github.com/davidfmiller/lsr/issues"
+    "url": "https://github.com/davidfmiller/rmr-lsr/issues"
   },
-  "homepage": "https://github.com/davidfmiller/lsr#readme",
+  "homepage": "https://github.com/davidfmiller/rmr-lsr#readme",
   "license": "ISC",
   "dependencies": {
     "rmr-util": "^1.0.7"

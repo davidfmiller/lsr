@@ -7,11 +7,12 @@ const
 // const extractCSS = new ExtractTextPlugin('[name].bundle.css');
 
 const config = {
-  entry: './src/scripts/index.js',
+  entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'docs/build/'),
-    filename: 'lsr.bundle.js'
+    filename: 'rmr-lsr.bundle.js'
   },
+  mode: 'development',
   watch: true,
   module: {
     rules: [

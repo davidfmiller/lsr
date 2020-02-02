@@ -1,4 +1,4 @@
-# [lsr](https://davidfmiller.github.io/rmr-lsr/)
+# [lsr](https://github.com/davidfmiller/rmr-lsr/)
 
 Basically an improved implementation of [atvImg](https://github.com/drewwilson/atvImg).
 
